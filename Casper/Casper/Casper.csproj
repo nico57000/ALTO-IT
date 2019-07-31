@@ -62,8 +62,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AffichageDesNormes.xaml.cs">
+      <DependentUpon>AffichageDesNormes.xaml</DependentUpon>
+    </Compile>
     <Compile Include="affichageProjets.xaml.cs">
       <DependentUpon>affichageProjets.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AjoutNorme.xaml.cs">
+      <DependentUpon>AjoutNorme.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreationProjet.xaml.cs">
       <DependentUpon>CreationProjet.xaml</DependentUpon>
@@ -73,12 +79,21 @@
       <DependentUpon>201907311247291_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Norme.cs" />
     <Compile Include="Projet.xaml.cs">
       <DependentUpon>Projet.xaml</DependentUpon>
     </Compile>
     <Compile Include="Projets.cs" />
     <Compile Include="User.cs" />
+    <Page Include="AffichageDesNormes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="affichageProjets.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AjoutNorme.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
