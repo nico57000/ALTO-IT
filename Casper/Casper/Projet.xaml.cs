@@ -40,7 +40,6 @@ namespace Alto_IT
 
         }
 
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (listeProjet.Text == "")
@@ -56,7 +55,6 @@ namespace Alto_IT
 
 
         }
-
 
         private void Modifierprojet_Click(object sender, RoutedEventArgs e)
         {
