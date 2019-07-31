@@ -71,6 +71,9 @@
     <Compile Include="Ajout.xaml.cs">
       <DependentUpon>Ajout.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AjoutMesures.xaml.cs">
+      <DependentUpon>AjoutMesures.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AjoutNorme.xaml.cs">
       <DependentUpon>AjoutNorme.xaml</DependentUpon>
     </Compile>
@@ -78,6 +81,7 @@
       <DependentUpon>CreationProjet.xaml</DependentUpon>
     </Compile>
     <Compile Include="Exigence.cs" />
+    <Compile Include="Mesures.cs" />
     <Compile Include="Migrations\201907311247291_init.cs" />
     <Compile Include="Migrations\201907311247291_init.Designer.cs">
       <DependentUpon>201907311247291_init.cs</DependentUpon>
@@ -85,6 +89,9 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Modifier.xaml.cs">
       <DependentUpon>Modifier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ModifierMesure.xaml.cs">
+      <DependentUpon>ModifierMesure.xaml</DependentUpon>
     </Compile>
     <Compile Include="Norme.cs" />
     <Compile Include="Projet.xaml.cs">
@@ -101,6 +108,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Ajout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AjoutMesures.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,6 +137,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Modifier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ModifierMesure.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
