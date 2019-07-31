@@ -26,8 +26,8 @@ namespace Alto_IT
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            //CreationProjet P = new CreationProjet(mw);
-            //P.Show();
+            CreationProjet P = new CreationProjet(mw);
+            P.Show();
             Close();
         }
 
