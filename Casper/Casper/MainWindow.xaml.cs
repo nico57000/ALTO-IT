@@ -31,7 +31,26 @@ namespace Alto_IT
 
         private void SignIn_bouton_Click(object sender, RoutedEventArgs e)
         {
-            // Ouvrir page projet
+            //try
+            //{
+            //    User us = (from u in database.UsersDatabase
+            //             where u.Identifiant == Champ_identifiant.Text && u.Password == Champ_password.Password
+            //               select u).First();
+
+            //    Dashboard D = new Dashboard(this);
+            //    D.Show();
+            //    Close();
+            //}
+            //catch (Exception)
+            //{
+            //    MessageBox.Show("Identifiant ou Mot de Passe invalide");
+            //}
+
+
+            Projet P = new Projet(this);
+            P.Show();
+            //Dashboard D = new Dashboard(this);
+            //D.Show();
             Close();
 
         }
