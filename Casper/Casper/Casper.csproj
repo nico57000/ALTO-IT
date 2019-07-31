@@ -100,6 +100,15 @@
     <Compile Include="Projets.cs" />
     <Compile Include="RelationsMesuresExigences.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Vue_Circulaire.xaml.cs">
+      <DependentUpon>Vue_Circulaire.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vue_Document.xaml.cs">
+      <DependentUpon>Vue_Document.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vue_Mesures.xaml.cs">
+      <DependentUpon>Vue_Mesures.xaml</DependentUpon>
+    </Compile>
     <Page Include="AffichageDesNormes.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -146,6 +155,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Projet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vue_Circulaire.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vue_Document.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Vue_Mesures.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

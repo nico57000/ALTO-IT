@@ -48,8 +48,8 @@ namespace Alto_IT
             }
             else
             {
-                //Dashboard D = new Dashboard(mw, (Projets)listeProjet.SelectedValue);
-                //D.Show();
+                Dashboard D = new Dashboard(mw, (Projets)listeProjet.SelectedValue);
+                D.Show();
                 Close();
             }
 
@@ -60,8 +60,8 @@ namespace Alto_IT
         {
             if (listeProjet.SelectedItem != null)
             {
-                //affichageProjets Af = new affichageProjets(mw, (Projets)listeProjet.SelectedValue);
-                //Af.Show();
+                affichageProjets Af = new affichageProjets(mw, (Projets)listeProjet.SelectedValue);
+                Af.Show();
             }
             else
             {
