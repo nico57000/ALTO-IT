@@ -80,6 +80,9 @@
     <Compile Include="CreationProjet.xaml.cs">
       <DependentUpon>CreationProjet.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dashboard.xaml.cs">
+      <DependentUpon>Dashboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Exigence.cs" />
     <Compile Include="Mesures.cs" />
     <Compile Include="Migrations\201907311247291_init.cs" />
@@ -130,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreationProjet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

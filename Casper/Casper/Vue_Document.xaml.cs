@@ -15,9 +15,7 @@ using System.Windows.Shapes;
 
 namespace Alto_IT
 {
-    /// <summary>
-    /// Logique d'interaction pour Vue_Document.xaml
-    /// </summary>
+
     public partial class Vue_Document : Page
     {
         public string DocumentSelectionne { get; set; }
