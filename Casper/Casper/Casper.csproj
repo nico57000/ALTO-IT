@@ -68,17 +68,24 @@
     <Compile Include="affichageProjets.xaml.cs">
       <DependentUpon>affichageProjets.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ajout.xaml.cs">
+      <DependentUpon>Ajout.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AjoutNorme.xaml.cs">
       <DependentUpon>AjoutNorme.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreationProjet.xaml.cs">
       <DependentUpon>CreationProjet.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Exigence.cs" />
     <Compile Include="Migrations\201907311247291_init.cs" />
     <Compile Include="Migrations\201907311247291_init.Designer.cs">
       <DependentUpon>201907311247291_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Modifier.xaml.cs">
+      <DependentUpon>Modifier.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Norme.cs" />
     <Compile Include="Projet.xaml.cs">
       <DependentUpon>Projet.xaml</DependentUpon>
@@ -90,6 +97,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="affichageProjets.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Ajout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,6 +125,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modifier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Projet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
