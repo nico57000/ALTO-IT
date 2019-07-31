@@ -54,8 +54,8 @@ namespace Alto_IT
                 MessageBox.Show("Création impossible");
             }
 
-            //Dashboard D = new Dashboard(mw, ProjetCree);
-            //D.Show();
+            Dashboard D = new Dashboard(mw, ProjetCree);
+            D.Show();
             Close();
             mw.database.SaveChanges();
 
