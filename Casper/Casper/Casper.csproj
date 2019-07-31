@@ -98,6 +98,7 @@
       <DependentUpon>Projet.xaml</DependentUpon>
     </Compile>
     <Compile Include="Projets.cs" />
+    <Compile Include="RelationsMesuresExigences.cs" />
     <Compile Include="User.cs" />
     <Page Include="AffichageDesNormes.xaml">
       <SubType>Designer</SubType>
