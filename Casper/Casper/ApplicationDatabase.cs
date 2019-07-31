@@ -10,9 +10,10 @@ namespace Alto_IT
     public class ApplicationDatabase : DbContext
     {
         public DbSet<User> UsersDatabase { get; set; }
+
         //public DbSet<Exigence> ExigenceDatabase { get; set; }
 
-        //public DbSet<Norme> NormeDatabase { get; set; }
+        public DbSet<Norme> NormeDatabase { get; set; }
 
         public DbSet<Projets> ProjetsDatabase { get; set; }
 
