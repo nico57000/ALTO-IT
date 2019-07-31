@@ -19,6 +19,6 @@ namespace Alto_IT
 
         public DbSet<Mesures> MesuresDatabase { get; set; }
 
-        //public DbSet<RelationsMesuresExigences> RelationMesuresExigenceDatabase { get; set; }
+        public DbSet<RelationsMesuresExigences> RelationMesuresExigenceDatabase { get; set; }
     }
 }
