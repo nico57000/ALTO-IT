@@ -101,6 +101,7 @@ namespace Alto_IT
             {
                 if (MessageBox.Show("Voulez-vous supprimer " + Vue.ExigenceSelectionne.Name, "Suppression", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                 {
+                    SupprimerRelationExigence();
                     string CurrentItem = TableFormater(SimpleCotFormater(FormaterToSQLRequest(Vue.ExigenceSelectionne.Name)));
 
                     Exigence Ntmp = Vue.ExigenceSelectionne;
@@ -160,6 +161,7 @@ namespace Alto_IT
                     // remove de la liste général dans le treeview
                     Vue.ROOT_Exigences.ExigenceObervCollec.Remove(Ntmp);
                 }
+                
             }
             else
             {
@@ -205,6 +207,9 @@ namespace Alto_IT
             ListeGenerale.Clear();
             ListeEnfant.Clear();
         }
+
+
+
 
         private void Ajout_Norme_Click(object sender, RoutedEventArgs e)
         {
@@ -465,7 +470,114 @@ namespace Alto_IT
 
         private void Supr_Mesures_Click(object sender, RoutedEventArgs e)
         {
+            if (Vue_Mesure.MesureSelectionne != null && Vue_Mesure.MesureSelectionne.Nom != "Menu")
+            {
+                if (MessageBox.Show("Voulez-vous supprimer " + Vue_Mesure.MesureSelectionne.Nom, "Suppression", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+                {
+                    SupprimerRelationMesure();
+                    string CurrentItem = TableFormaterMesures(SimpleCotFormater(FormaterToSQLRequest(Vue_Mesure.MesureSelectionne.Nom)));
 
+                    Mesures Ntmp = Vue_Mesure.MesureSelectionne;
+
+
+                    using (ApplicationDatabase context = new ApplicationDatabase())
+                    {
+                        var pathFile = context.Database.SqlQuery<string>(
+                                           "SELECT DocumentPath FROM Mesures WHERE Id= " + Ntmp.Id).FirstOrDefault();
+
+                        if (pathFile != null)
+                        {
+                            File.Delete(pathFile);
+                        }
+                    }
+
+                    //string NtmpTableName = "";
+                    //NtmpTableName = mw.SimpleCotFormater(mw.FormaterToSQLRequest(Ntmp.Name));
+                    //StringBuilder builder2 = new StringBuilder(NtmpTableName);
+                    //NtmpTableName = builder.Insert(1, NormeSelectionnee.Id).ToString();
+
+                    // Supprime de la DbSet, à mettre à la fin, reviens à la position 1
+                    mw.database.MesuresDatabase.Remove(Ntmp);
+                    mw.database.SaveChanges();
+
+
+                    using (ApplicationDatabase context = new ApplicationDatabase())
+                    {
+
+                        //supprime de la table Exigence son nom
+                        //var xx = context.Database.ExecuteSqlCommand("DELETE FROM Exigences WHERE Id = '" + Ntmp.Id + "'");
+
+
+                        //Quand suppression d'un parent => supprimer la table nominative des enfants
+                        SuppressionTabEntantMesures(CurrentItem);
+
+                        //supprime de la table parent
+                        var ParentName = context.Database.SqlQuery<string>("SELECT Nom from Mesures WHERE Id= " + Ntmp.FKToMesure).FirstOrDefault();
+
+                        var ListeEnfant = context.Database.SqlQuery<string>("SELECT * FROM " + Ntmp);
+
+                        if (ParentName != "Menu" && ParentName != null)
+                        {
+                            ParentName = TableFormaterMesures(FormaterToSQLRequest(ParentName));
+                            var zz = context.Database.ExecuteSqlCommand("DELETE FROM " + ParentName + " WHERE Titre = " + "'" + SimpleCotFormater(Ntmp.Nom) + "'");
+                        }
+
+                        // supprime la table à son nom
+                        var x = context.Database.ExecuteSqlCommand("DROP TABLE " + CurrentItem);
+
+                    }
+
+
+                    // remove tous ses enfants de la collection Observable
+                    Ntmp.MesureObservableCollec.Clear();
+
+                    // remove de la liste général dans le treeview
+                    Vue_Mesure.ROOT_Mesures.MesureObservableCollec.Remove(Ntmp);
+                }
+                
+            }
+            else
+            {
+                MessageBox.Show("Selectionner une ligne", "error", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            mw.database.SaveChanges();
+        }
+
+        public void SuppressionTabEntantMesures(string CurrentItem)
+        {
+            List<string> ListeGenerale = new List<string>();
+            List<string> ListeEnfant = new List<string>();
+            using (ApplicationDatabase context = new ApplicationDatabase())
+            {
+                var RequestListEnfant = context.Database.SqlQuery<string>("Select Titre from " + CurrentItem).ToList();
+                ListeEnfant = RequestListEnfant;
+                foreach (string item in ListeEnfant)
+                {
+                    string tmp = "";
+                    ListeGenerale.Add(item);
+                    tmp = item;
+                    SuppressionTabEntant(TableFormaterMesures(FormaterToSQLRequest(tmp)));
+                }
+                foreach (string item2 in ListeGenerale)
+                {
+                    var pathFile = context.Database.SqlQuery<string>(
+                                           "SELECT DocumentPath FROM Mesures WHERE Nom = '" + SimpleCotFormater(item2) + "'").FirstOrDefault();
+                    if (pathFile != null)
+                    {
+                        File.Delete(pathFile);
+                    }
+
+
+                    var suppenfantTableExigence = context.Database.ExecuteSqlCommand("DELETE FROM Mesures WHERE Nom = '" + SimpleCotFormater(item2) + "'");
+
+                    string tmp2 = "";
+                    tmp2 = item2;
+                    var suppenfant = context.Database.ExecuteSqlCommand("DROP TABLE " + TableFormaterMesures(SimpleCotFormater(FormaterToSQLRequest(tmp2))));
+                }
+                RequestListEnfant.Clear();
+            }
+            ListeGenerale.Clear();
+            ListeEnfant.Clear();
         }
 
         private void Retour_MouseDown(object sender, MouseButtonEventArgs e)
@@ -473,6 +585,32 @@ namespace Alto_IT
             Projet Pr = new Projet(mw);
             Pr.Show();
             Close();
+        }
+
+        public void SupprimerRelationExigence()
+        {
+            var Requeterel = (from E in mw.database.RelationMesuresExigenceDatabase
+                              where E.IdExigence == Vue.ExigenceSelectionne.Id
+                              select E).ToList();
+
+            foreach (var item in Requeterel)
+            {
+                mw.database.RelationMesuresExigenceDatabase.Remove(item);
+            }
+
+        }
+
+
+        public void SupprimerRelationMesure()
+        {
+            var Requetrel = (from M in mw.database.RelationMesuresExigenceDatabase
+                             where M.IdMesures == Vue_Mesure.MesureSelectionne.Id
+                             select M).ToList();
+
+            foreach (var item in Requetrel)
+            {
+                mw.database.RelationMesuresExigenceDatabase.Remove(item);
+            }
         }
     }
 }
