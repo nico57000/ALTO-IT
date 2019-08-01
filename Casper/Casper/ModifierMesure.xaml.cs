@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +23,10 @@ namespace Alto_IT
     {
         public List<string> ListeExigenceCheck { get; set; }
 
+        public Vue_Mesures Vue { get; set; }
+
         public List<int> ListExigenceCheckId { get; set; }
         public MainWindow mw { get; set; }
-
-        public Vue_Mesures vue { get; set; }
 
         public ModifierMesure()
         {
@@ -37,42 +39,157 @@ namespace Alto_IT
         {
             InitializeComponent();
             mw = m;
-            vue = vu;
+            Vue = vu;
             ListeExigenceCheck = new List<string>();
             ListExigenceCheckId = new List<int>();
         }
 
         private void ModifierMesure_Click(object sender, RoutedEventArgs e)
         {
+            if (Vue.MesureSelectionne != null && Vue.MesureSelectionne.Nom != "Menu")
+            {
+                string CurrentItem = Vue.Dash.FormaterToSQLRequest("_" + Vue.Dash.ProjetEncours.Id + Vue.MesureSelectionne.Nom);
+                string CurrentTitle = Vue.Dash.SimpleCotFormater(Vue.MesureSelectionne.Nom);
+                string CurrentDesc = Vue.Dash.SimpleCotFormater(Vue.MesureSelectionne.Description);
 
+
+
+                using (ApplicationDatabase context = new ApplicationDatabase())
+                {
+                    string newTableName = Vue.Dash.TableFormaterMesures(Vue.Dash.SimpleCotFormater(Vue.Dash.FormaterToSQLRequest(Title.Text)));
+
+                    try
+                    {
+                        //renomme la table
+                        var w = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + CurrentItem + "', '" + newTableName + "'");
+
+                        //modif dans la table Exigence
+
+                        var yy = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Description = '" + Vue.Dash.SimpleCotFormater(Content.Text) + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+                        var y = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Nom = '" + Vue.Dash.SimpleCotFormater(Title.Text) + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+                        try
+                        {
+                            //modif dans table parents
+                            var ParentName = context.Database.SqlQuery<string>("SELECT Name from Exigences WHERE Id= " + Vue.MesureSelectionne.FKToMesure).FirstOrDefault();
+                            if (ParentName != "Menu" && ParentName != null)
+                            {
+                                ParentName = Vue.Dash.TableFormaterMesures(Vue.Dash.SimpleCotFormater(Vue.Dash.FormaterToSQLRequest(ParentName)));
+                                var zz = context.Database.ExecuteSqlCommand("UPDATE " + ParentName + " SET Description = '" + Vue.Dash.SimpleCotFormater(Content.Text) + "' WHERE Titre = '" + Vue.MesureSelectionne.Nom + "'");
+                                var z = context.Database.ExecuteSqlCommand("UPDATE " + ParentName + " SET Titre = '" + Vue.Dash.SimpleCotFormater(Title.Text) + "' WHERE Titre = '" + Vue.MesureSelectionne.Nom + "'");
+
+                            }
+                            Vue.MesureSelectionne.Nom = Title.Text;
+                            Vue.MesureSelectionne.Description = Content.Text;
+
+
+
+                        }
+                        catch (Exception)
+                        {
+                            var ww = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + newTableName + "', '" + CurrentItem + "'");
+
+                            var yty = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Description = '" + CurrentDesc + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+                            var yt = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Nom = '" + CurrentTitle + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+                            MessageBox.Show("Impossible d ajouter à la table Parent", "erreur", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Impossible de Modifier la table", "erreur", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+
+                    switch (ComboBoxStatus.Text)
+                    {
+                        case "Appliquée":
+                            Vue.MesureSelectionne.Status = STATUS.appliquee;
+                            break;
+                        case "Programmée":
+                            Vue.MesureSelectionne.Status = STATUS.programmee;
+                            break;
+                        case "Non Appliquée":
+                            Vue.MesureSelectionne.Status = STATUS.non_appliquee;
+                            break;
+                        case "Non Évaluée":
+                            Vue.MesureSelectionne.Status = STATUS.non_evalue;
+                            break;
+                        case "Non Applicable":
+                            Vue.MesureSelectionne.Status = STATUS.non_applicable;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    mw.database.SaveChanges();
+                    Vue.AfficherTreeViewMesures();
+                    Close();
+
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("Selectionnez une ligne", "error", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void Bouton_AjouterDocument_Click(object sender, RoutedEventArgs e)
         {
-
+            OpenFileDialog open = new OpenFileDialog();
+            open.ShowDialog();
+            string filename = "(" + Vue.MesureSelectionne.Id + ")" + open.SafeFileName;
+            string targetPath = @"C:\Users\stagiaire\Desktop\ALTO-IT\Casper\Casper\bin\Debug\Files\" + filename;
+            try
+            {
+                File.Copy(open.FileName, targetPath);
+                Vue.MesureSelectionne.DocumentPath = targetPath;
+                Vue.MesureSelectionne.DocumentName = filename;
+            }
+            catch (System.Exception)
+            {
+                if (MessageBox.Show("Ce fichier éxiste déja voulez vous le supprimer ?", "Erreur", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        File.Delete(targetPath);
+                        File.Copy(open.FileName, targetPath);
+                        Vue.MesureSelectionne.DocumentPath = targetPath;
+                        Vue.MesureSelectionne.DocumentName = filename;
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Impossible de supprimer");
+                    }
+                }
+            }
+            MessageBox.Show("Document bien enregistré");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (KeyValuePair<Exigence, bool> item in vue.MesureSelectionne.Dico_ExigenceCheck)
+            if (Vue.MesureSelectionne != null)
             {
-                if (item.Key.FKToProjet == vue.Dash.ProjetEncours.Id)
+                foreach (KeyValuePair<Exigence, bool> item in Vue.MesureSelectionne.Dico_ExigenceCheck)
                 {
-                    CheckBox C = new CheckBox();
-                    C.Content = item.Key.Name;
-                    C.IsChecked = item.Value;
-                    C.Checked += CheckboxExigences_Checked;
-                    C.Unchecked += CheckboxExigence_Unchecked;
-                    listviewMesures.Items.Add(C);
-                }
+                    if (item.Key.FKToProjet == Vue.Dash.ProjetEncours.Id)
+                    {
+                        CheckBox C = new CheckBox();
+                        C.Content = item.Key.Name;
+                        C.IsChecked = item.Value;
+                        C.Checked += CheckboxExigences_Checked;
+                        C.Unchecked += CheckboxExigence_Unchecked;
+                        listviewMesures.Items.Add(C);
+                    }
 
+                }
             }
+            
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            vue.Dash.FenetreOuverte = false;
-            vue.RemplirTab();
+            Vue.Dash.FenetreOuverte = false;
+            Vue.RemplirTab();
         }
 
 
@@ -88,7 +205,7 @@ namespace Alto_IT
 
             ListExigenceCheckId.Add(query.FirstOrDefault());
 
-            RelationsMesuresExigences rel = new RelationsMesuresExigences(query.FirstOrDefault(), vue.MesureSelectionne.Id);
+            RelationsMesuresExigences rel = new RelationsMesuresExigences(query.FirstOrDefault(), Vue.MesureSelectionne.Id);
 
             mw.database.RelationMesuresExigenceDatabase.Add(rel);
 
@@ -96,8 +213,8 @@ namespace Alto_IT
                          where exi.Name == Cb.Content.ToString()
                          select exi;
 
-            vue.MesureSelectionne.Dico_ExigenceCheck[Exisel.FirstOrDefault()] = true;
-            Exisel.FirstOrDefault().Dico_MesuresCheck[vue.MesureSelectionne] = true;
+            Vue.MesureSelectionne.Dico_ExigenceCheck[Exisel.FirstOrDefault()] = true;
+            Exisel.FirstOrDefault().Dico_MesuresCheck[Vue.MesureSelectionne] = true;
             mw.database.SaveChanges();
 
 
@@ -115,7 +232,7 @@ namespace Alto_IT
             ListExigenceCheckId.Remove(query.FirstOrDefault());
 
             var delete = from relation in mw.database.RelationMesuresExigenceDatabase
-                         where relation.IdMesures == vue.MesureSelectionne.Id && relation.IdExigence == query.FirstOrDefault()
+                         where relation.IdMesures == Vue.MesureSelectionne.Id && relation.IdExigence == query.FirstOrDefault()
                          select relation;
 
             mw.database.RelationMesuresExigenceDatabase.Remove(delete.FirstOrDefault());
@@ -124,8 +241,8 @@ namespace Alto_IT
                          where m.Name == Cb.Content.ToString()
                          select m;
 
-            vue.MesureSelectionne.Dico_ExigenceCheck[Exisel.FirstOrDefault()] = false;
-            Exisel.FirstOrDefault().Dico_MesuresCheck[vue.MesureSelectionne] = false;
+            Vue.MesureSelectionne.Dico_ExigenceCheck[Exisel.FirstOrDefault()] = false;
+            Exisel.FirstOrDefault().Dico_MesuresCheck[Vue.MesureSelectionne] = false;
             mw.database.SaveChanges();
 
         }

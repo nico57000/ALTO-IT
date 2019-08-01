@@ -22,6 +22,7 @@ namespace Alto_IT
         {
             InitializeComponent();
             mw = m;
+            afficherProjets();
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
