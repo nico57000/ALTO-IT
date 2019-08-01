@@ -446,13 +446,21 @@ namespace Alto_IT
 
         private void Modif_Mesures_Click(object sender, RoutedEventArgs e)
         {
-            ModifierMesure M = new ModifierMesure(mw, Vue_Mesure);
-            M.Show();
-            M.Title.Text = M.vue.MesureSelectionne.Nom;
-            M.Content.Text = M.vue.MesureSelectionne.Description;
-            M.Status.Text = M.vue.MesureSelectionne.Status.ToString();
-            M.Document.Text = M.vue.MesureSelectionne.DocumentName;
-            FenetreOuverte = true;
+            if (Vue_Mesure.MesureSelectionne != null || Vue_Mesure.MesureSelectionne.Nom != "Menu")
+            {
+                ModifierMesure M = new ModifierMesure(mw, Vue_Mesure);
+                M.Show();
+                M.Title.Text = M.Vue.MesureSelectionne.Nom;
+                M.Content.Text = M.Vue.MesureSelectionne.Description;
+                M.Status.Text = M.Vue.MesureSelectionne.Status.ToString();
+                M.Document.Text = M.Vue.MesureSelectionne.DocumentName;
+                FenetreOuverte = true;
+            }
+            else
+            {
+                MessageBox.Show("Veuillez selectionner une mesure", "Attention", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            
         }
 
         private void Supr_Mesures_Click(object sender, RoutedEventArgs e)

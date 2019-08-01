@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 
 namespace Alto_IT
 {
-
     public partial class Vue_Document : Page
     {
         public string DocumentSelectionne { get; set; }

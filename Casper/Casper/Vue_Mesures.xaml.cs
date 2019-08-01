@@ -45,7 +45,21 @@ namespace Alto_IT
 
         private void Image_MouseUp(object sender, MouseButtonEventArgs e)
         {
-
+            try
+            {
+                String Filename = MesureSelectionne.DocumentPath;
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                process.StartInfo.FileName = Filename;
+                process.Start();
+            }
+            catch (NullReferenceException)
+            {
+                MessageBox.Show("Veuillez sélectionner une Mesure");
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("Aucun document associé");
+            }
         }
 
         private void TreeviewFrame_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
