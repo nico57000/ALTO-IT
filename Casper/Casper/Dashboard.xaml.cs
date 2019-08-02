@@ -161,13 +161,13 @@ namespace Alto_IT
                     // remove de la liste général dans le treeview
                     Vue.ROOT_Exigences.ExigenceObervCollec.Remove(Ntmp);
                 }
-                
+                mw.database.SaveChanges();
             }
             else
             {
                 MessageBox.Show("Selectionner une ligne", "error", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            mw.database.SaveChanges();
+            
         }
 
 

@@ -114,6 +114,7 @@ namespace Alto_IT
                 var x = context.Database.ExecuteSqlCommand("CREATE TABLE " + TableName + " (ID INTEGER IDENTITY(1,1) PRIMARY KEY, ForeignKey INT, Titre VARCHAR(MAX), Description VARCHAR(MAX))");
 
             }
+            mw.WebQueryMySql("CREATE TABLE " + TableName + " (ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT, ForeignKey INT, Titre VARCHAR(10000), Description VARCHAR(10000))");
         }
 
 

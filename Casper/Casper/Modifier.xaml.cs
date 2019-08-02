@@ -58,11 +58,16 @@ namespace Alto_IT
                     {
                         //renomme la table
                         var w = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + CurrentItem + "', '" + newTableName + "'");
+                        mw.WebQueryMySql("RENAME TABLE "+ CurrentItem +" TO "+ newTableName);
 
                         //modif dans la table Exigence
 
-                        var yy = context.Database.ExecuteSqlCommand("UPDATE Exigences" + " SET Description = '" + Vue.dash.SimpleCotFormater(Content.Text) + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
-                        var y = context.Database.ExecuteSqlCommand("UPDATE Exigences" + " SET Name = '" + Vue.dash.SimpleCotFormater(Title.Text) + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+                        var yy = context.Database.ExecuteSqlCommand("UPDATE Exigences SET Description = '" + Vue.dash.SimpleCotFormater(Content.Text) + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+                        var y = context.Database.ExecuteSqlCommand("UPDATE Exigences SET Name = '" + Vue.dash.SimpleCotFormater(Title.Text) + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+
+                        mw.WebQueryMySql("UPDATE Exigences SET Description = '" + Vue.dash.SimpleCotFormater(Content.Text) + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+                        mw.WebQueryMySql("UPDATE Exigences SET Name = '" + Vue.dash.SimpleCotFormater(Title.Text) + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+
                         try
                         {
                             //modif dans table parents
@@ -72,6 +77,9 @@ namespace Alto_IT
                                 ParentName = Vue.dash.TableFormater(Vue.dash.SimpleCotFormater(Vue.dash.FormaterToSQLRequest(ParentName)));
                                 var zz = context.Database.ExecuteSqlCommand("UPDATE " + ParentName + " SET Description = '" + Vue.dash.SimpleCotFormater(Content.Text) + "' WHERE Titre = '" + Vue.ExigenceSelectionne.Name + "'");
                                 var z = context.Database.ExecuteSqlCommand("UPDATE " + ParentName + " SET Titre = '" + Vue.dash.SimpleCotFormater(Title.Text) + "' WHERE Titre = '" + Vue.ExigenceSelectionne.Name + "'");
+
+                                mw.WebQueryMySql("UPDATE " + ParentName + " SET Description = '" + Vue.dash.SimpleCotFormater(Content.Text) + "' WHERE Titre = '" + Vue.ExigenceSelectionne.Name + "'");
+                                mw.WebQueryMySql("UPDATE " + ParentName + " SET Titre = '" + Vue.dash.SimpleCotFormater(Title.Text) + "' WHERE Titre = '" + Vue.ExigenceSelectionne.Name + "'");
 
                             }
                             Vue.ExigenceSelectionne.Name = Title.Text;
@@ -83,9 +91,14 @@ namespace Alto_IT
                         catch (Exception)
                         {
                             var ww = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + newTableName + "', '" + CurrentItem + "'");
+                            mw.WebQueryMySql("RENAME TABLE " + newTableName + " TO " + CurrentItem);
 
                             var yty = context.Database.ExecuteSqlCommand("UPDATE Exigences" + " SET Description = '" + CurrentDesc + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
                             var yt = context.Database.ExecuteSqlCommand("UPDATE Exigences" + " SET Name = '" + CurrentTitle + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+
+                            mw.WebQueryMySql("UPDATE Exigences" + " SET Description = '" + CurrentDesc + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+                            mw.WebQueryMySql("UPDATE Exigences" + " SET Name = '" + CurrentTitle + "' WHERE Id = " + "'" + Vue.ExigenceSelectionne.Id + "'" + " ");
+
                             MessageBox.Show("Impossible d ajouter à la table Parent", "erreur", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
 

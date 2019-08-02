@@ -62,11 +62,13 @@ namespace Alto_IT
                     {
                         //renomme la table
                         var w = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + CurrentItem + "', '" + newTableName + "'");
-
+                        mw.WebQueryMySql("RENAME TABLE " + CurrentItem + " TO " + newTableName);
                         //modif dans la table Exigence
 
                         var yy = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Description = '" + Vue.Dash.SimpleCotFormater(Content.Text) + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
                         var y = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Nom = '" + Vue.Dash.SimpleCotFormater(Title.Text) + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+                        mw.WebQueryMySql("UPDATE Mesures" + " SET Description = '" + Vue.Dash.SimpleCotFormater(Content.Text) + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+                        mw.WebQueryMySql("UPDATE Mesures" + " SET Nom = '" + Vue.Dash.SimpleCotFormater(Title.Text) + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
                         try
                         {
                             //modif dans table parents
@@ -76,6 +78,9 @@ namespace Alto_IT
                                 ParentName = Vue.Dash.TableFormaterMesures(Vue.Dash.SimpleCotFormater(Vue.Dash.FormaterToSQLRequest(ParentName)));
                                 var zz = context.Database.ExecuteSqlCommand("UPDATE " + ParentName + " SET Description = '" + Vue.Dash.SimpleCotFormater(Content.Text) + "' WHERE Titre = '" + Vue.MesureSelectionne.Nom + "'");
                                 var z = context.Database.ExecuteSqlCommand("UPDATE " + ParentName + " SET Titre = '" + Vue.Dash.SimpleCotFormater(Title.Text) + "' WHERE Titre = '" + Vue.MesureSelectionne.Nom + "'");
+
+                                mw.WebQueryMySql("UPDATE " + ParentName + " SET Description = '" + Vue.Dash.SimpleCotFormater(Content.Text) + "' WHERE Titre = '" + Vue.MesureSelectionne.Nom + "'");
+                                mw.WebQueryMySql("UPDATE " + ParentName + " SET Titre = '" + Vue.Dash.SimpleCotFormater(Title.Text) + "' WHERE Titre = '" + Vue.MesureSelectionne.Nom + "'");
 
                             }
                             Vue.MesureSelectionne.Nom = Title.Text;
@@ -87,9 +92,15 @@ namespace Alto_IT
                         catch (Exception)
                         {
                             var ww = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + newTableName + "', '" + CurrentItem + "'");
+                            mw.WebQueryMySql("RENAME TABLE " + newTableName + " TO " + CurrentItem);
+
 
                             var yty = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Description = '" + CurrentDesc + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
                             var yt = context.Database.ExecuteSqlCommand("UPDATE Mesures" + " SET Nom = '" + CurrentTitle + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+
+                            mw.WebQueryMySql("UPDATE Mesures" + " SET Description = '" + CurrentDesc + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+                            mw.WebQueryMySql("UPDATE Mesures" + " SET Nom = '" + CurrentTitle + "' WHERE Id = " + "'" + Vue.MesureSelectionne.Id + "'" + " ");
+
                             MessageBox.Show("Impossible d ajouter à la table Parent", "erreur", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
 
