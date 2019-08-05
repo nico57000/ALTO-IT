@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MySql.Data.MySqlClient;
 
 namespace Alto_IT
 {
@@ -21,11 +22,17 @@ namespace Alto_IT
     /// </summary>
     public partial class MainWindow : Window
     {
+        public MySqlConnection MyServerSql { get; set; }
+
         public ApplicationDatabase database;
+
+        private MySqlCommand cmd;
         public MainWindow()
         {
             InitializeComponent();
             database = new ApplicationDatabase();
+            MyServerSql = new MySqlConnection("server=137.74.118.171;user id=sta33;password=cu267a;persistsecurityinfo=True;database=sta33;allowuservariables=True");
+            MyServerSql.Open();
 
         }
 
@@ -46,15 +53,37 @@ namespace Alto_IT
             //    MessageBox.Show("Identifiant ou Mot de Passe invalide");
             //}
 
+            cmd = new MySqlCommand("SELECT * FROM Users WHERE Identifiant = '"+ Champ_identifiant.Text+"' AND Password = '"+Champ_password.Password+"'", MyServerSql);
 
-            Projet P = new Projet(this);
-            P.Show();
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                Projet P = new Projet(this);
+                P.Show();
+                Close();
+                reader.Close();
+            }
+            else
+            {
+                MessageBox.Show("User non identifié");
+                reader.Close();
+            }
+
+
+
             //Dashboard D = new Dashboard(this);
             //D.Show();
-            Close();
+
 
         }
 
+        public async void WebQueryMySql(string Commande)
+        {
+            cmd = new MySqlCommand(Commande,MyServerSql);
+            await cmd.ExecuteNonQueryAsync();
+        }
         
+
     }
 }

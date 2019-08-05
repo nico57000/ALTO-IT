@@ -35,18 +35,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942" />
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604" />
+    <Reference Include="MySql.Data, Version=8.0.16.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="PresentationFramework.Aero" />
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="PresentationFramework.AeroLite" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -88,13 +96,9 @@
     </Compile>
     <Compile Include="Exigence.cs" />
     <Compile Include="Mesures.cs" />
-    <Compile Include="Migrations\201907311247291_init.cs" />
-    <Compile Include="Migrations\201907311247291_init.Designer.cs">
-      <DependentUpon>201907311247291_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908010611061_finalisation.cs" />
-    <Compile Include="Migrations\201908010611061_finalisation.Designer.cs">
-      <DependentUpon>201908010611061_finalisation.cs</DependentUpon>
+    <Compile Include="Migrations\201908020725019_Ending.cs" />
+    <Compile Include="Migrations\201908020725019_Ending.Designer.cs">
+      <DependentUpon>201908020725019_Ending.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Modifier.xaml.cs">
@@ -109,6 +113,11 @@
     </Compile>
     <Compile Include="Projets.cs" />
     <Compile Include="RelationsMesuresExigences.cs" />
+    <Compile Include="sta33DataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sta33DataSet.xsd</DependentUpon>
+    </Compile>
     <Compile Include="User.cs" />
     <Compile Include="Vue_Circulaire.xaml.cs">
       <DependentUpon>Vue_Circulaire.xaml</DependentUpon>
@@ -199,11 +208,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201907311247291_init.resx">
-      <DependentUpon>201907311247291_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908010611061_finalisation.resx">
-      <DependentUpon>201908010611061_finalisation.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908020725019_Ending.resx">
+      <DependentUpon>201908020725019_Ending.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -213,6 +219,17 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="sta33DataSet.xsc">
+      <DependentUpon>sta33DataSet.xsd</DependentUpon>
+    </None>
+    <None Include="sta33DataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>sta33DataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="sta33DataSet.xss">
+      <DependentUpon>sta33DataSet.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

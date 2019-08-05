@@ -3,7 +3,7 @@ namespace Alto_IT.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class finalisation : DbMigration
+    public partial class Ending : DbMigration
     {
         public override void Up()
         {
@@ -62,12 +62,32 @@ namespace Alto_IT.Migrations
                 .Index(t => t.Norme_Id);
             
             CreateTable(
+                "dbo.Projets",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Nom = c.String(),
+                        CloudProvider = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.RelationsMesuresExigences",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
                         IdExigence = c.Int(nullable: false),
                         IdMesures = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Users",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Identifiant = c.String(),
+                        Password = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -81,7 +101,9 @@ namespace Alto_IT.Migrations
             DropIndex("dbo.Normes", new[] { "Norme_Id" });
             DropIndex("dbo.Mesures", new[] { "Mesures_Id" });
             DropIndex("dbo.Exigences", new[] { "Exigence_Id" });
+            DropTable("dbo.Users");
             DropTable("dbo.RelationsMesuresExigences");
+            DropTable("dbo.Projets");
             DropTable("dbo.Normes");
             DropTable("dbo.Mesures");
             DropTable("dbo.Exigences");
