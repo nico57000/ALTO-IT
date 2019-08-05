@@ -224,6 +224,8 @@ namespace Alto_IT
                          where exi.Name == Cb.Content.ToString()
                          select exi;
 
+            mw.WebQueryMySql("INSERT INTO RelationMesuresExigences(IdExigence, IdMesure) VALUES(" + Exisel.FirstOrDefault().Id + ", " + Vue.MesureSelectionne.Id + "");
+
             Vue.MesureSelectionne.Dico_ExigenceCheck[Exisel.FirstOrDefault()] = true;
             Exisel.FirstOrDefault().Dico_MesuresCheck[Vue.MesureSelectionne] = true;
             mw.database.SaveChanges();
@@ -251,6 +253,8 @@ namespace Alto_IT
             var Exisel = from m in mw.database.ExigenceDatabase
                          where m.Name == Cb.Content.ToString()
                          select m;
+
+            mw.WebQueryMySql("DELETE FROM RelationMesuresExigences WHERE IdExigence = " + Exisel.FirstOrDefault().Id + " AND IdMesure = " + Vue.MesureSelectionne.Id + "");
 
             Vue.MesureSelectionne.Dico_ExigenceCheck[Exisel.FirstOrDefault()] = false;
             Exisel.FirstOrDefault().Dico_MesuresCheck[Vue.MesureSelectionne] = false;

@@ -131,9 +131,6 @@ namespace Alto_IT
                     using (ApplicationDatabase context = new ApplicationDatabase())
                     {
 
-                        //supprime de la table Exigence son nom
-                        //var xx = context.Database.ExecuteSqlCommand("DELETE FROM Exigences WHERE Id = '" + Ntmp.Id + "'");
-
 
                         //Quand suppression d'un parent => supprimer la table nominative des enfants
                         SuppressionTabEntant(CurrentItem);
@@ -147,10 +144,13 @@ namespace Alto_IT
                         {
                             ParentName = TableFormater(FormaterToSQLRequest(ParentName));
                             var zz = context.Database.ExecuteSqlCommand("DELETE FROM " + ParentName + " WHERE Titre = " + "'" + SimpleCotFormater(Ntmp.Name) + "'");
+                            mw.WebQueryMySql("DELETE FROM " + ParentName + " WHERE Titre = " + "'" + SimpleCotFormater(Ntmp.Name) + "'");
+
                         }
 
                         // supprime la table à son nom
                         var x = context.Database.ExecuteSqlCommand("DROP TABLE " + CurrentItem);
+                        mw.WebQueryMySql("DROP TABLE " + CurrentItem);
 
                     }
 
@@ -197,10 +197,12 @@ namespace Alto_IT
 
 
                     var suppenfantTableExigence = context.Database.ExecuteSqlCommand("DELETE FROM Exigences WHERE Name = '" + SimpleCotFormater(item2) + "'");
+                    mw.WebQueryMySql("DELETE FROM Exigences WHERE Name = '" + SimpleCotFormater(item2) + "'");
 
                     string tmp2 = "";
                     tmp2 = item2;
                     var suppenfant = context.Database.ExecuteSqlCommand("DROP TABLE " + TableFormater(SimpleCotFormater(FormaterToSQLRequest(tmp2))));
+                    mw.WebQueryMySql("DROP TABLE " + TableFormater(SimpleCotFormater(FormaterToSQLRequest(tmp2))));
                 }
                 RequestListEnfant.Clear();
             }
@@ -520,10 +522,12 @@ namespace Alto_IT
                         {
                             ParentName = TableFormaterMesures(FormaterToSQLRequest(ParentName));
                             var zz = context.Database.ExecuteSqlCommand("DELETE FROM " + ParentName + " WHERE Titre = " + "'" + SimpleCotFormater(Ntmp.Nom) + "'");
+                            mw.WebQueryMySql("DELETE FROM " + ParentName + " WHERE Titre = " + "'" + SimpleCotFormater(Ntmp.Nom) + "'");
                         }
 
                         // supprime la table à son nom
                         var x = context.Database.ExecuteSqlCommand("DROP TABLE " + CurrentItem);
+                        mw.WebQueryMySql("DROP TABLE " + CurrentItem);
 
                     }
 
@@ -569,10 +573,12 @@ namespace Alto_IT
 
 
                     var suppenfantTableExigence = context.Database.ExecuteSqlCommand("DELETE FROM Mesures WHERE Nom = '" + SimpleCotFormater(item2) + "'");
+                    mw.WebQueryMySql("DELETE FROM Mesures WHERE Nom = '" + SimpleCotFormater(item2) + "'");
 
                     string tmp2 = "";
                     tmp2 = item2;
                     var suppenfant = context.Database.ExecuteSqlCommand("DROP TABLE " + TableFormaterMesures(SimpleCotFormater(FormaterToSQLRequest(tmp2))));
+                    mw.WebQueryMySql("DROP TABLE " + TableFormaterMesures(SimpleCotFormater(FormaterToSQLRequest(tmp2))));
                 }
                 RequestListEnfant.Clear();
             }
@@ -596,6 +602,7 @@ namespace Alto_IT
             foreach (var item in Requeterel)
             {
                 mw.database.RelationMesuresExigenceDatabase.Remove(item);
+                mw.WebQueryMySql("DELETE FROM RelationMesuresExigences WHERE IdExigence = " + item.IdExigence);
             }
 
         }
@@ -610,6 +617,7 @@ namespace Alto_IT
             foreach (var item in Requetrel)
             {
                 mw.database.RelationMesuresExigenceDatabase.Remove(item);
+                mw.WebQueryMySql("DELETE FROM RelationMesuresExigences WHERE IdMesure = " + item.IdMesures);
             }
         }
     }

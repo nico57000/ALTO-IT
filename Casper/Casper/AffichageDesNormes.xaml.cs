@@ -78,7 +78,9 @@ namespace Alto_IT
                         foreach (string item in Listeenfants)
                         {
                             var x = context.Database.ExecuteSqlCommand("DROP TABLE " + dashb.SimpleCotFormater(dashb.FormaterToSQLRequest("_" + IdSelected + item)));
+                            mw.WebQueryMySql("DROP TABLE " + dashb.SimpleCotFormater(dashb.FormaterToSQLRequest("_" + IdSelected + item)));
                             var zz = context.Database.ExecuteSqlCommand("DELETE FROM Exigences WHERE Name = " + "'" + dashb.SimpleCotFormater(item) + "'");
+                            mw.WebQueryMySql("DELETE FROM Exigences WHERE Name = " + "'" + dashb.SimpleCotFormater(item) + "'");
                         }
                     }
 

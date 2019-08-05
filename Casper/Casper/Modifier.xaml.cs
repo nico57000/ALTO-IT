@@ -191,12 +191,14 @@ namespace Alto_IT
             RelationsMesuresExigences rel = new RelationsMesuresExigences(Vue.ExigenceSelectionne.Id, query.FirstOrDefault());
             mw.database.RelationMesuresExigenceDatabase.Add(rel);
 
+            
+
 
             var Mesuresel = from m in mw.database.MesuresDatabase
                             where m.Nom == Cb.Content.ToString()
                             select m;
 
-
+            mw.WebQueryMySql("INSERT INTO RelationMesuresExigences(IdExigence, IdMesure) VALUES(" + Vue.ExigenceSelectionne.Id + ", " + Mesuresel.FirstOrDefault().Id + "");
 
             Vue.ExigenceSelectionne.Dico_MesuresCheck[Mesuresel.FirstOrDefault()] = true;
             Mesuresel.FirstOrDefault().Dico_ExigenceCheck[Vue.ExigenceSelectionne] = true;
@@ -208,6 +210,8 @@ namespace Alto_IT
             CheckBox Cb = (CheckBox)sender;
             ListedeMesuresChecked.Remove(Cb.Content.ToString());
 
+            
+
             var query = from i in mw.database.MesuresDatabase
                         where i.Nom == Cb.Content.ToString()
                         select i.Id;
@@ -217,6 +221,8 @@ namespace Alto_IT
             var delete = from relation in mw.database.RelationMesuresExigenceDatabase
                          where relation.IdExigence == Vue.ExigenceSelectionne.Id && relation.IdMesures == query.FirstOrDefault()
                          select relation;
+
+            mw.WebQueryMySql("DELETE FROM RelationMesuresExigences WHERE IdExigence = " + Vue.ExigenceSelectionne.Id + " AND IdMesure = "+delete.FirstOrDefault()+"");
 
             mw.database.RelationMesuresExigenceDatabase.Remove(delete.FirstOrDefault());
 
