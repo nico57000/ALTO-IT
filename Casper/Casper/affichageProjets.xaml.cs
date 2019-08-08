@@ -35,6 +35,7 @@ namespace Alto_IT
         {
             if (projetName.Text != "")
             {
+                string Temp = ProjetSelectionne.Nom;
                 ProjetSelectionne.Nom = projetName.Text;
 
                 switch (comboboxProvider.Text)
@@ -52,6 +53,7 @@ namespace Alto_IT
                         break;
                 }
 
+                mw.WebQueryMySql("UPDATE Projets SET Nom = '" + ProjetSelectionne.Nom + "', CloudProvider = '" + (int)ProjetSelectionne.CloudProvider +"' WHERE Nom = '"+Temp+"'" );
                 mw.database.SaveChanges();
             }
             else

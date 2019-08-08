@@ -80,17 +80,13 @@ namespace Alto_IT
                 if (MessageBox.Show("Voulez vous vraiment supprimer le projet :" + projetsel.Nom + " ?", "Attention", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
                     mw.database.ProjetsDatabase.Remove(projetsel);
+                    mw.WebQueryMySql("DELETE FROM Projets WHERE Nom = '" + projetsel.Nom + "'");
                     mw.database.SaveChanges();
                     MessageBox.Show("Projet supprimé", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-
                     listeProjet.Items.Clear();
                     afficherProjets();
                 }
             }
-
-
         }
-
     }
-
 }

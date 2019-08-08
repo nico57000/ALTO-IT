@@ -48,7 +48,9 @@ namespace Alto_IT
 
             if (NormeSelectionnee != null)
             {
+                string Temp = NormeSelectionnee.Nom_Norme;
                 NormeSelectionnee.Nom_Norme = TitreModify.Text;
+                mw.WebQueryMySql("UPDATE Normes SET Nom_Norme = '" + NormeSelectionnee.Nom_Norme + "' WHERE Nom_Norme = " + Temp + "");
                 mw.database.SaveChanges();
                 dashb.ROOT_Normes.NormeObervCollec.Clear();
                 dashb.AfficherLesNormes();
@@ -69,8 +71,8 @@ namespace Alto_IT
                 if (MessageBox.Show("Êtes-vous sûr de vouloir supprimer la norme " + NormeSelectionnee.Nom_Norme + " ?", "Supprimer", MessageBoxButton.YesNo, MessageBoxImage.Warning, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                 {
                     int IdSelected = NormeSelectionnee.Id;
-
                     mw.database.NormeDatabase.Remove(NormeSelectionnee);
+                    mw.WebQueryMySql("DELETE FROM Norme WHERE Nom_Norm = '" + NormeSelectionnee.Nom_Norme + "'");
                     mw.database.SaveChanges();
                     using (ApplicationDatabase context = new ApplicationDatabase())
                     {

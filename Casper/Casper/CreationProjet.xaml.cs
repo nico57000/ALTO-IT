@@ -53,7 +53,7 @@ namespace Alto_IT
             {
                 MessageBox.Show("Création impossible");
             }
-
+            mw.WebQueryMySql("INSERT INTO Projets (CloudProvider, Nom) VALUES (" + (int)ProjetCree.CloudProvider + ", '"+ProjetCree.Nom+"')");
             Dashboard D = new Dashboard(mw, ProjetCree);
             D.Show();
             Close();

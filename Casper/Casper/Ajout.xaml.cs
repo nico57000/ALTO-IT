@@ -52,6 +52,7 @@ namespace Alto_IT
                             Exigence ExigenceParent = new Exigence(Title.Text, Content.Text, 0, dashb.NormeSelectionnee.Id, dashb.ProjetEncours.Id);
                             Vue.ROOT_Exigences.ExigenceObervCollec.Add(ExigenceParent);
                             mw.database.ExigenceDatabase.Add(ExigenceParent);
+                            mw.WebQueryMySql("INSERT INTO Exigences (Description, FKToProjet, ForeignKey,ForeignKey_TO_Norme, Name) Values ('" + ExigenceParent.Description + "', " + ExigenceParent.FKToProjet + ", " + ExigenceParent.ForeignKey + ", " + ExigenceParent.ForeignKey_TO_Norme + ", '"+ExigenceParent.Name+"') ");
                             RemplirDico(ExigenceParent);
                             mw.database.SaveChanges();
                             Close();
@@ -71,6 +72,7 @@ namespace Alto_IT
                                 RemplirTable(Vue.ExigenceSelectionne.Name, Vue.ExigenceSelectionne.Id);
                                 Exigence ExigenceEnfant = new Exigence(Title.Text, Content.Text, Vue.ExigenceSelectionne.Id, dashb.NormeSelectionnee.Id, dashb.ProjetEncours.Id);
                                 Vue.ExigenceSelectionne.ExigenceObervCollec.Add(ExigenceEnfant);
+                                mw.WebQueryMySql("INSERT INTO Exigences (Description, FKToProjet, ForeignKey,ForeignKey_TO_Norme, Name) Values ('" + ExigenceEnfant.Description + "', " + ExigenceEnfant.FKToProjet + ", " + ExigenceEnfant.ForeignKey + ", " + ExigenceEnfant.ForeignKey_TO_Norme + ", '" + ExigenceEnfant.Name + "') ");
                                 mw.database.ExigenceDatabase.Add(ExigenceEnfant);
                                 RemplirDico(ExigenceEnfant);
                             }

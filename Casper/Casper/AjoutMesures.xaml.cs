@@ -51,6 +51,7 @@ namespace Alto_IT
                             Mesures MesureParent = new Mesures(MesureName.Text, MesureDescription.Text, 0, Dash.ProjetEncours.Id);
                             Dash.Vue_Mesure.ROOT_Mesures.MesureObservableCollec.Add(MesureParent);
                             mw.database.MesuresDatabase.Add(MesureParent);
+                            mw.WebQueryMySql("INSERT INTO Mesures (Description, FKToMesure, FKToProjets, Nom) Values ('"+MesureParent.Description+"', "+MesureParent.FKToMesure+", "+MesureParent.FKToProjets+", '"+MesureParent.Nom+"') ");
                             RemplirDico(MesureParent);
                             mw.database.SaveChanges();
                             Close();
@@ -73,6 +74,7 @@ namespace Alto_IT
                                 Mesures MesureEnfant = new Mesures(MesureName.Text, MesureDescription.Text, Dash.Vue_Mesure.MesureSelectionne.Id, Dash.ProjetEncours.Id);
                                 Dash.Vue_Mesure.MesureSelectionne.MesureObservableCollec.Add(MesureEnfant);
                                 mw.database.MesuresDatabase.Add(MesureEnfant);
+                                mw.WebQueryMySql("INSERT INTO Mesures (Description, FKToMesure, FKToProjets, Nom) Values ('" + MesureEnfant.Description + "', " + MesureEnfant.FKToMesure + ", " + MesureEnfant.FKToProjets + ", '" + MesureEnfant.Nom + "') ");
                                 RemplirDico(MesureEnfant);
                             }
                             catch (Exception)

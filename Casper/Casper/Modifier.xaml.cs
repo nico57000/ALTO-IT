@@ -57,8 +57,12 @@ namespace Alto_IT
                     try
                     {
                         //renomme la table
-                        var w = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + CurrentItem + "', '" + newTableName + "'");
-                        mw.WebQueryMySql("RENAME TABLE "+ CurrentItem +" TO "+ newTableName);
+                        if (CurrentItem != newTableName)
+                        {
+                            var w = context.Database.ExecuteSqlCommand("EXEC sp_rename '" + CurrentItem + "', '" + newTableName + "'");
+                            mw.WebQueryMySql("RENAME TABLE " + CurrentItem + " TO " + newTableName);
+                        }
+                        
 
                         //modif dans la table Exigence
 
